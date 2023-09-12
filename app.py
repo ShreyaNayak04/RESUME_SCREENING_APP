@@ -8,10 +8,11 @@ tfidf = TfidfVectorizer(stop_words='english')
 nltk.download('punkt')
 nltk.download('stopwords')
 
-#loading moels
+#loading models (pickel files that are generated during model execution)
 clf = pickle.load(open('clf.pkl','rb'))
 tfidf = pickle.load(open('tfidf.pkl','rb'))
 
+#Function used to clean any input resume into a proper format
 def cleanResume(txt):
     cleanTxt = re.sub('http\S+\s',' ',txt)
     cleanTxt = re.sub('RT|CC',' ',cleanTxt)
@@ -41,7 +42,7 @@ def main():
         prediction_id = clf.predict(final_cleaned_resume)[0]
         st.write(prediction_id)
         
-        
+        #Find the particular id for all the categories that you require the candidate to have those skills
         category_mapping = {
         15: "Java Developer",
         23: "Testing",
@@ -70,9 +71,9 @@ def main():
         0:  "Advocate",
 
 }
-
+        #get the prediction id for the resume you passed. If it does not contain matching prediction id then print the "Unknown"
         category_name = category_mapping.get(prediction_id, "Unknown")
-
+        #get the particular category for that prediction id
         st.write('Predicted Category : ', category_name)
     
     
